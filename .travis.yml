@@ -1,0 +1,26 @@
+sudo: required
+language: node_js
+node_js:
+  - 15
+
+services:
+  - docker
+
+before_install:
+  - docker build -t sid/react -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run sid/react npm test -- --watchAll=false
+
+after_success:
+  - docker build -t sid/multi-client ./client
+  - docker build -t sid/multi-nginx ./nginx
+  - docker build -t sid/multi-server ./server
+  - docker build -t sid/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push sid/multi-client
+  - docker push sid/multi-nginx
+  - docker push sid/multi-server
+  - docker push sid/multi-worker
