@@ -25,7 +25,7 @@ after_success:
   - docker push sidnix/multi-server
   - docker push sidnix/multi-worker
 
-deplot:
+deploy:
   provider: elasticbeanstalk
   region: us-east-2
   app: multi-docker
