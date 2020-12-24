@@ -7,20 +7,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t sid/react -f ./client/Dockerfile.dev ./client
+  - docker build -t sidnix/react -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run sid/react npm test -- --watchAll=false
+  - docker run sidnix/react npm test -- --watchAll=false
 
 after_success:
-  - docker build -t sid/multi-client ./client
-  - docker build -t sid/multi-nginx ./nginx
-  - docker build -t sid/multi-server ./server
-  - docker build -t sid/multi-worker ./worker
+  - docker build -t sidnix/multi-client ./client
+  - docker build -t sidnix/multi-nginx ./nginx
+  - docker build -t sidnix/multi-server ./server
+  - docker build -t sidnix/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push sid/multi-client
-  - docker push sid/multi-nginx
-  - docker push sid/multi-server
-  - docker push sid/multi-worker
+  - docker push sidnix/multi-client
+  - docker push sidnix/multi-nginx
+  - docker push sidnix/multi-server
+  - docker push sidnix/multi-worker
